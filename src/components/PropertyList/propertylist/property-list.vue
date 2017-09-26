@@ -10,7 +10,8 @@
           </button-tab-item>
         </button-tab>
       </div>
-      <router-view></router-view>
+      <myproperty-list :show="isShow_pro" ></myproperty-list>
+      <myapply-list :show="isShow_aly" ></myapply-list>
     </div>
 </template>
 <style scoped>
@@ -18,6 +19,8 @@
 </style>
 <script>
     import { ButtonTab, ButtonTabItem } from 'vux';
+    import MypropertyList from '../myproperty/myproperty-list';
+    import MyapplyList from '../myapply/myapply-list';
     import list from '../list';
 
     export default {
@@ -26,11 +29,13 @@
       },
       methods: list.methods,
       mounted() {
-        
+
       },
       components: {
         ButtonTab, 
-        ButtonTabItem
+        ButtonTabItem,
+        MypropertyList,
+        MyapplyList
       }
     }
 </script>

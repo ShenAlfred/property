@@ -1,23 +1,25 @@
 <template>
-    <swipeout>
-        <swipeout-item>
-            <div slot="right-menu">
-                <swipeout-button type="primary" @click.native="goToOperation('return', 1)" >归还</swipeout-button>
-                <swipeout-button type="warn" @click.native="goToOperation('apply', 1)">报修</swipeout-button>
-            </div>
-            <div slot="content" class="property-content">
-                <div v-on:click="goToDetail(1)">
-                    <flexbox class="property-attr-item">
-                        <flexbox-item>类型:</flexbox-item>
-                        <flexbox-item>编号:</flexbox-item>
-                    </flexbox>
-                    <div class="property-attr-item">
-                        所属公司:
+    <div v-if="isshow">
+        <swipeout>
+            <swipeout-item>
+                <div slot="right-menu">
+                    <swipeout-button type="primary" @click.native="goToOperation('return', 1)" >归还</swipeout-button>
+                    <swipeout-button type="warn" @click.native="goToOperation('apply', 1)">报修</swipeout-button>
+                </div>
+                <div slot="content" class="property-content">
+                    <div v-on:click="goToDetail(1)">
+                        <flexbox class="property-attr-item">
+                            <flexbox-item>类型:</flexbox-item>
+                            <flexbox-item>编号:</flexbox-item>
+                        </flexbox>
+                        <div class="property-attr-item">
+                            所属公司:
+                        </div>
                     </div>
                 </div>
-            </div>
-        </swipeout-item>
-    </swipeout>
+            </swipeout-item>
+        </swipeout>
+    </div>
 </template>
 <style>
     @import url(../list.css);
@@ -27,12 +29,15 @@
     import myproperty from './myproperty';
 
     export default {
+        props: ['show'],
         data() {
-            return {}
+            return {
+                isshow: this.show
+            }
         },
         methods: myproperty.method,
         mounted() {
-            
+            console.log(this.isshow)
         },
         components: { 
             Swipeout, 

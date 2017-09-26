@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="isshow">
         <div class="property-content">
             <flexbox class="property-attr-item">
                 <flexbox-item>类型:</flexbox-item>
@@ -18,6 +18,15 @@
     import { Flexbox, FlexboxItem } from 'vux';
     
     export default {
+        props: ['show'],
+        data() {
+            return {
+                isshow: this.show
+            }
+        },
+        mounted() {
+            console.log(this.isshow)
+        },
         components: {
             Flexbox,
             FlexboxItem
