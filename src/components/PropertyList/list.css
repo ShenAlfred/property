@@ -1,0 +1,15 @@
+.property-content {
+    margin-bottom: 10px;
+    background: #fff;
+    padding: 10px 15px;
+}
+.property-attr-item {
+    padding: 2px 0;
+    font-size: 14px;
+}
+.textarea-warp {
+    padding: 10px;
+}
+.btn-group {
+    padding: 10px 20px;
+}

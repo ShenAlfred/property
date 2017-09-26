@@ -13,8 +13,33 @@ const routes = [
       meta: {
         title: '资产列表',
       },
-      component: resolve => require(['@/components/PropertyList/property-list'], resolve),
+      component: resolve => require(['@/components/PropertyList/propertylist/property-list'], resolve),
+      children: [
+        {
+          path: '/myproperty',
+          component: resolve => require(['@/components/PropertyList/myproperty/myproperty-list'], resolve)
+        },
+        {
+          path: '/myapply',
+          component: resolve => require(['@/components/PropertyList/myapply/myapply-list'], resolve)
+        }
+      ]
     },
+    {
+      path: '/propertyDetail',
+      name: 'propertyDetail',
+      component: resolve => require(['@/components/PropertyDetail/propertydetail'], resolve)
+    },
+    {
+      path: '/propertyApply',
+      name: 'propertyApply',
+      component: resolve => require(['@/components/PropertyList/myproperty/myproperty-apply'], resolve)
+    },
+    {
+      path: '/propertyReturn',
+      name: 'propertyReturn',
+      component: resolve => require(['@/components/PropertyList/myproperty/myproperty-return'], resolve)
+    }
   ];
 
 let router = new Router({

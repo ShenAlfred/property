@@ -16,12 +16,12 @@ export default {
     @import 'assets/FontAwesome-4.7.0/css/font-awesome.min.css';
 
 body, html {
-    background: #fff;
+    background: #ececec;
 }
 
 #app {
     color: #2c3e50;
-    background: #fff;
+    background: #ececec;
     height: 100%;
     -webkit-overflow-scrolling : touch;
 }
