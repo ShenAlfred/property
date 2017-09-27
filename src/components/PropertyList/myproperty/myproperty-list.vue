@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isshow">
+    <div>
         <swipeout>
             <swipeout-item>
                 <div slot="right-menu">
@@ -29,15 +29,12 @@
     import myproperty from './myproperty';
 
     export default {
-        props: ['show'],
         data() {
-            return {
-                isshow: this.show
-            }
+            return {}
         },
         methods: myproperty.method,
         mounted() {
-            console.log(this.isshow)
+            console.log('我的资产');
         },
         components: { 
             Swipeout, 

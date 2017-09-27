@@ -3,8 +3,6 @@ import api from '../../api';
 import config from '../../config';
 
 const _data = {
-    isShow_pro: 1,
-    isShow_aly: 0,
     router: ['/myproperty', '/myapply']
 }
 
