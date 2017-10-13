@@ -2,10 +2,10 @@
  * Created by admin on 2017/6/16.
  */
 const api = {
-  getArticleSort:       '/culture/app/getArticleSort',         //获取菜单列表（文章列表）
-  getCarousel:          '/culture/app/getCarousel',            //获取轮播图
+  getPropertyList:       '/property/app/propList',             //获取资源列表
+  getApplyList:          '/property/app/reqList',               //获取轮播图
   getArticles:          '/culture/app/getArticles',            //获取文章列表
-  getArticleDetail:     '/culture/app/getArticleDetail',       //获取文章详情
+  getPropertyDetail:     '/property/app/propDetail',            //获取资产详情
 };
 
 export default api;

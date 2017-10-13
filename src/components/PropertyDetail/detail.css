@@ -8,3 +8,6 @@
 .detail-item {
     margin: 5px 0;
 }
+.detail-item span {
+  padding-left: 5px;
+}

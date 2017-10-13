@@ -7,29 +7,16 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    companyClasses: {},
-    companyBanners: {},
-    companyArticles: {}
+    isSelectStart: false
   },
   getters: {
-    getAllCompanyClasses (state) {
-      return state.companyClasses;
+    getSelectStart (state) {
+      return state.isSelectStart
     }
   },
   mutations: {
-    addCompanyClasses (state, obj) {
-      state.companyClasses[obj.id] = obj;
-    },
-    addCompanyArticles (state, obj) {
-      state.companyArticles[obj.id] = obj;
-    },
-    addCompanyBanners (state, obj) {
-      state.companyBanners[obj.id] = obj;
-    },
-    pushArticle (state, obj) {
-      for(var i=0; i<obj.articles.length; i++) {
-        state.companyClasses[obj.id].articles.push(obj.articles[i]);
-      }
+    setIsSelectStart (state, value) {
+      state.isSelectStart = value;
     }
   },
   actions: {

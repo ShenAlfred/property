@@ -13,3 +13,14 @@
 .btn-group {
     padding: 10px 20px;
 }
+.bottom-button {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #fff;
+  text-align:center;
+  letter-spacing: 2px;
+  line-height: 50px;
+  font-size: 14px;
+  z-index: 9;
+}

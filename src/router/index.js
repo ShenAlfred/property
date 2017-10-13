@@ -15,16 +15,18 @@ const routes = [
       children: [
         {
           path: '/myproperty',
+          name: 'myproperty',
           component: resolve => require(['@/components/PropertyList/myproperty/myproperty-list'], resolve)
         },
         {
           path: '/myapply',
+          name: 'myapply',
           component: resolve => require(['@/components/PropertyList/myapply/myapply-list'], resolve)
         }
       ]
     },
     {
-      path: '/propertyDetail',
+      path: '/propertyDetail/:propId',
       name: 'propertyDetail',
       component: resolve => require(['@/components/PropertyDetail/propertydetail'], resolve)
     },
