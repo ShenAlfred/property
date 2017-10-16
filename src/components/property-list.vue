@@ -159,7 +159,6 @@
     import when from 'when';
     import api from '../api';
     import config from '../config';
-    import devEnv from './devEnv';
 
     export default {
       data() {
@@ -184,9 +183,11 @@
       methods: {
         //我的申请和我的资源切换
         TabChange(index) {
+          this.$store.commit('setProOrApp',index);
           if(index == 0) {
             this.showMyProperty = true;
             this.showApplying = false;
+            //this.$store.commit('setIsSelectStart', false);
             this.getPropertyList().then((resolve) => {
               if(resolve.data.data.length) {
                 this.propertyList = resolve.data.data;
@@ -237,6 +238,7 @@
           this.isShowDefaultList = true;
           this.$store.commit('setIsSelectStart', false);
         },
+        //提交数据
         submitData() {
           this.$ajax.get(config.baseUrl + api.requestApply, {
             params: {
@@ -246,6 +248,9 @@
           }).then((response) => {
             if(response.data.code == '0') {
               this.showSubmitSuccessToast = true;
+              setTimeout(() => {
+                this.$router.go({path: '/'});
+              }, 1500);
             }else {
               this.showSubmitErrorToast = true;
             }
@@ -282,21 +287,11 @@
         this.$store.watch((state) => state.isSelectStart, function(value) {
           that.isSelectStart = value;
         });
-        if(config.isDevEnv) {
-          devEnv._fn.getDevTicket.bind(this)().then(() => {
-            this.getPropertyList().then((resolve) => {
-              if(resolve.data.data.length) {
-                this.propertyList = resolve.data.data;
-              }
-            });
-          });
-        }else {
-          this.getPropertyList().then((resolve) => {
-            if(resolve.data.data.length) {
-              this.propertyList = resolve.data.data;
-            }
-          });
-        }
+        this.getPropertyList().then((resolve) => {
+          if(resolve.data.data.length) {
+            this.propertyList = resolve.data.data;
+          }
+        });
       },
       components: {
         ButtonTab,

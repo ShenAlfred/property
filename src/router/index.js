@@ -21,6 +21,19 @@ const routes = [
             next();
           }
         }
+        if(config.isDevEnv) {
+          const query = {
+            ticket: util.getUrlKey("ticket") || '1fd8b2474549c06901731df7c5e01cd4'
+          };
+          axios.get(config.baseUrl + "/property/app/link", {
+            params: {
+              ticket: query.ticket
+            }
+          }).then((response) => {
+            next()
+          }).catch((response) => {
+          });
+        }
       }
     },
     {

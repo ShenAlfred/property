@@ -24,20 +24,22 @@
                 </div>
             </div>
             <div style="margin-top: 20px;">
-                <div v-for="ad2 in applyDetail2">
-                    <flexbox>
-                        <flexbox-item>
-                            <strong>类型:</strong>
-                            <span>{{ ad2.state_text }}</span>
-                        </flexbox-item>
-                        <flexbox-item>
-                            <strong>编号:</strong>
-                            <span>{{ ad2.code }}</span>
-                        </flexbox-item>
-                    </flexbox>
-                    <div>
-                        <strong>所属公司:</strong>
-                        <span>{{ad2.corpName}}</span>
+                <div class="pro-item" v-for="(ad2, index) in applyDetail2">
+                    <div v-bind:class="{ odd: index%2==0 }">
+                        <flexbox>
+                            <flexbox-item>
+                                <strong>类型:</strong>
+                                <span>{{ ad2.state_text }}</span>
+                            </flexbox-item>
+                            <flexbox-item>
+                                <strong>编号:</strong>
+                                <span>{{ ad2.code }}</span>
+                            </flexbox-item>
+                        </flexbox>
+                        <div>
+                            <strong>所属公司:</strong>
+                            <span>{{ad2.corpName}}</span>
+                        </div>
                     </div>
                 </div>
             </div>
