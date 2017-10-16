@@ -1,0 +1,316 @@
+<template>
+    <div>
+      <div class="property-tab" v-show="!isSelectStart">
+        <button-tab>
+          <button-tab-item @on-item-click="TabChange(0)" v-bind = "{selected: selected==0}">
+            我的资产
+          </button-tab-item>
+          <button-tab-item @on-item-click="TabChange(1)" v-bind = "{selected: selected==1}">
+            我的申请
+          </button-tab-item>
+        </button-tab>
+      </div>
+      <div style="padding-bottom: 50px;" v-show="showMyProperty">
+        <div v-show="isShowDefaultList">
+          <swipeout>
+              <swipeout-item v-for="pl in propertyList" :key="pl.id">
+                  <div slot="content" class="property-content">
+                      <div v-on:click="goToDetail(pl.id)">
+                          <flexbox class="property-attr-item">
+                              <flexbox-item>
+                                <strong>类型:</strong>
+                                <span>{{ pl.typeName }}</span>
+                              </flexbox-item>
+                              <flexbox-item>
+                                <strong>编号:</strong>
+                                <span>{{ pl.code}}</span>
+                              </flexbox-item>
+                          </flexbox>
+                          <div class="property-attr-item">
+                              <strong>所属公司:</strong>
+                              <span>{{pl.corpName}}</span>
+                          </div>
+                      </div>
+                  </div>
+              </swipeout-item>
+          </swipeout>
+        </div>
+        <div v-show="isShowCheckerList">
+          <checker default-item-class="check-default" selected-item-class="check-selected" v-model="checked_value" type="checkbox">
+            <div v-for="pl in propertyList" :key="pl.id">
+              <checker-item  :value="pl.id">
+                <div class="property-content">
+                  <flexbox class="property-attr-item">
+                    <flexbox-item>
+                      <strong>类型:</strong>
+                      <span>{{ pl.typeName }}</span>
+                    </flexbox-item>
+                    <flexbox-item>
+                      <strong>编号:</strong>
+                      <span>{{ pl.code}}</span>
+                    </flexbox-item>
+                  </flexbox>
+                  <div class="property-attr-item">
+                    <strong>所属公司:</strong>
+                    <span>{{pl.corpName}}</span>
+                  </div>
+                  <div class="check-icon">
+                    <i class="fa fa-check"></i>
+                  </div>
+                </div>
+              </checker-item>
+            </div>
+          </checker>
+        </div>
+        <div class="bottom-button" v-show="isShowDefaultList">
+            <flexbox :gutter="0">
+              <flexbox-item>
+                <x-button type="primary" @click.native="selectStart(1)">归还</x-button>
+              </flexbox-item>
+              <flexbox-item>
+                <x-button type="warn" @click.native="selectStart(2)">报修</x-button>
+              </flexbox-item>
+            </flexbox>
+        </div>
+        <div class="bottom-button" v-show="isShowCheckerList">
+            <flexbox :gutter="0">
+              <flexbox-item>
+                <x-button type="default" @click.native="confirmSelect()">完成</x-button>
+              </flexbox-item>
+              <flexbox-item>
+                <x-button type="default" @click.native="cancelSelect()">取消</x-button>
+              </flexbox-item>
+            </flexbox>
+        </div>
+        <div v-show="isShowTextArea">
+          <div class="textarea-warp">
+            <x-textarea :max="100" :placeholder="placeholderText"></x-textarea>
+          </div>
+          <div class="btn-group">
+            <x-button type="warn" @click.native="submitData()">提交</x-button>
+          </div>
+        </div>
+        <toast v-model="isSelectEmpty" type="text" width="15em" position="bottom">请选择，资产不能为空。</toast>
+        <toast v-model="showSubmitSuccessToast" type="success" :time="1000" text="提交成功"></toast> 
+        <toast v-model="showSubmitErrorToast" type="cancel" :time="1000" text="提交失败"></toast>
+      </div>
+      <div style="padding-bottom: 50px;" v-show="showApplying">
+        <div v-for="al in applyList" :key="al.id">
+          <div class="property-content" v-on:click="goToApplyDetail(al.id)">
+            <div>
+              <strong>申请事由:</strong>
+              <span>{{al.reason}}</span>
+            </div>
+            <div>
+              <strong>申请时间:</strong>
+              <span>{{al.createTime}}</span>
+            </div>
+            <div>
+              <strong>申请处理时间:</strong>
+              <span>{{al.handleTime}}</span>
+            </div>
+            <div>
+              <strong>申请的处理意见:</strong>
+              <span>{{al.handleResult}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</template>
+<style scoped>
+  @import url('./property-list.css');
+
+    .vux-checker-item {
+      position: relative;
+      display: block;
+    }
+    .check-icon {
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      width: 30px;
+      height: 30px;
+      margin-top: -15px;
+      border: 1px solid #ccc;
+      border-radius: 100%;
+      text-align: center;
+      line-height: 30px;
+    }
+    .vux-checker-item.check-default .check-icon {
+      border: 1px solid #ccc;
+    }
+    .vux-checker-item.check-default .check-icon i {
+      color: #ccc;
+    }
+    .vux-checker-item.check-selected .check-icon {
+      background: #ff5454;
+      border: 1px solid #ff5454;
+    }
+    .vux-checker-item.check-selected .check-icon i {
+      color: #fff;
+    }
+    .bottom-button .weui-btn {
+      border-radius: 0;
+    }
+</style>
+<script>
+    import { Toast, XTextarea, Swipeout, SwipeoutItem, Checker, CheckerItem, SwipeoutButton, XButton, Flexbox, FlexboxItem, ButtonTab, ButtonTabItem } from 'vux';
+    import when from 'when';
+    import api from '../api';
+    import config from '../config';
+    import devEnv from './devEnv';
+
+    export default {
+      data() {
+        return {
+          showMyProperty: true,
+          showApplying: false,
+          selected: 0,
+          isSelectStart: '',
+          propertyList: [],
+          applyList: [],
+          isShowDefaultList: true,
+          isShowCheckerList: false,
+          isShowTextArea: false,
+          isSelectEmpty: false,
+          checked_value: '',
+          placeholderText: '',
+          submitType: '',
+          showSubmitSuccessToast: false,
+          showSubmitErrorToast: false
+        }
+      },
+      methods: {
+        //我的申请和我的资源切换
+        TabChange(index) {
+          if(index == 0) {
+            this.showMyProperty = true;
+            this.showApplying = false;
+            this.getPropertyList().then((resolve) => {
+              if(resolve.data.data.length) {
+                this.propertyList = resolve.data.data;
+              }
+            });
+          }else if(index == 1) {
+            this.showMyProperty = false;
+            this.showApplying = true;
+             this.getApplyList().then((resolve) => {
+              if(resolve.data.data.length) {
+                this.applyList = resolve.data.data;
+              }
+            });
+          }
+        },
+        //跳转详情
+        goToDetail(propertyId) {
+            this.$router.push( {name: 'propertyDetail', params: {propId: propertyId}});
+        },
+        //跳转我的应用详情
+        goToApplyDetail(applyId) {
+          this.$router.push( {name: 'applyDetail', params: {reqId: applyId}});
+        },
+        //归还或修复
+        selectStart(type) {
+          if(type == 1) {
+            this.placeholderText = '请填写归还原因。';
+          }else if (type == 2) {
+            this.placeholderText = '请填写报修原因。';
+          }
+          this.submitType = type;
+          this.isShowCheckerList = true;
+          this.isShowDefaultList = false;
+          this.$store.commit('setIsSelectStart', true);
+        },
+        //确定完成选择提交的资源
+        confirmSelect() {
+          if(!this.checked_value.length) {
+            this.isSelectEmpty = true;
+          }else {
+            this.isShowTextArea = true;
+            this.isShowCheckerList = false;
+          }
+        },
+        //取消选择资源
+        cancelSelect() {
+          this.isShowCheckerList = false;
+          this.isShowDefaultList = true;
+          this.$store.commit('setIsSelectStart', false);
+        },
+        submitData() {
+          this.$ajax.get(config.baseUrl + api.requestApply, {
+            params: {
+              typeId: this.submitType,
+              propIds: this.checked_value.join(',')
+            }
+          }).then((response) => {
+            if(response.data.code == '0') {
+              this.showSubmitSuccessToast = true;
+            }else {
+              this.showSubmitErrorToast = true;
+            }
+          }).catch((response) => {
+            this.showSubmitErrorToast = true;
+          });
+        },
+        getPropertyList() {
+          const deferred = when.defer();
+          const promise = deferred.promise;
+          this.$ajax.get(config.baseUrl + api.getPropertyList, {})
+            .then((response) => {
+              deferred.resolve(response);
+            }).catch((response) => {
+            deferred.reject(response);
+          });
+          return promise;
+        },
+        getApplyList() {
+          const deferred = when.defer();
+          const promise = deferred.promise;
+          this.$ajax.get(config.baseUrl + api.getApplyList, {})
+            .then((response) => {
+              deferred.resolve(response);
+            }).catch((response) => {
+            deferred.reject(response);
+          });
+          return promise;
+        }
+      },
+      mounted() {
+        const that = this;
+        this.isSelectStart = this.$store.getters.getSelectStart;
+        this.$store.watch((state) => state.isSelectStart, function(value) {
+          that.isSelectStart = value;
+        });
+        if(config.isDevEnv) {
+          devEnv._fn.getDevTicket.bind(this)().then(() => {
+            this.getPropertyList().then((resolve) => {
+              if(resolve.data.data.length) {
+                this.propertyList = resolve.data.data;
+              }
+            });
+          });
+        }else {
+          this.getPropertyList().then((resolve) => {
+            if(resolve.data.data.length) {
+              this.propertyList = resolve.data.data;
+            }
+          });
+        }
+      },
+      components: {
+        ButtonTab,
+        ButtonTabItem,
+        Toast, 
+        XTextarea,
+        Swipeout, 
+        SwipeoutItem, 
+        Checker,
+        CheckerItem,
+        SwipeoutButton,
+        XButton,
+        Flexbox, 
+        FlexboxItem 
+      }
+    }
+</script>

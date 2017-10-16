@@ -9,7 +9,7 @@ const devEnv = {
     const deferred = when.defer();
     const promise = deferred.promise;
     const query = {
-      ticket: this.$route.query.ticket || 'ed9306a423f8e07a9e4ffbbb2b45f8c9'
+      ticket: this.$route.query.ticket || '1fd8b2474549c06901731df7c5e01cd4'
     };
     this.$ajax.get(config.baseUrl + "/property/app/link", {
       params: {

@@ -10,35 +10,28 @@ const routes = [
     {
       path: '/',
       name: 'propertyList',
-      redirect: "/myproperty",
-      component: resolve => require(['@/components/PropertyList/propertylist/property-list'], resolve),
-      children: [
-        {
-          path: '/myproperty',
-          name: 'myproperty',
-          component: resolve => require(['@/components/PropertyList/myproperty/myproperty-list'], resolve)
-        },
-        {
-          path: '/myapply',
-          name: 'myapply',
-          component: resolve => require(['@/components/PropertyList/myapply/myapply-list'], resolve)
+      component: resolve => require(['@/components/property-list'], resolve),
+      beforeEnter: (to, ffrom, next) => {
+        if(typeof(reqId) == "undefined") {
+          next();
+        }else {
+          if(reqId) {
+            next({name: 'applyDetail', params: {reqId: reqId}})
+          }else {
+            next();
+          }
         }
-      ]
+      }
+    },
+    {
+      path: '/applyDetail/:reqId',
+      name: 'applyDetail',
+      component: resolve => require(['@/components/applyDetail'], resolve)
     },
     {
       path: '/propertyDetail/:propId',
       name: 'propertyDetail',
-      component: resolve => require(['@/components/PropertyDetail/propertydetail'], resolve)
-    },
-    {
-      path: '/propertyApply',
-      name: 'propertyApply',
-      component: resolve => require(['@/components/PropertyList/myproperty/myproperty-apply'], resolve)
-    },
-    {
-      path: '/propertyReturn',
-      name: 'propertyReturn',
-      component: resolve => require(['@/components/PropertyList/myproperty/myproperty-return'], resolve)
+      component: resolve => require(['@/components/propertydetail'], resolve)
     }
   ];
 
