@@ -2,15 +2,16 @@
     <div>
       <div class="property-tab" v-show="!isSelectStart">
         <button-tab>
-          <button-tab-item @on-item-click="TabChange(0)" v-bind = "{selected: selected==0}">
+          <button-tab-item @on-item-click="TabChange(0)" selected>
             我的资产
           </button-tab-item>
-          <button-tab-item @on-item-click="TabChange(1)" v-bind = "{selected: selected==1}">
+          <button-tab-item @on-item-click="TabChange(1)">
             我的申请
           </button-tab-item>
         </button-tab>
       </div>
       <div style="padding-bottom: 50px;" v-show="showMyProperty">
+        <!--step1 默认显示列表 -->
         <div v-show="isShowDefaultList">
           <swipeout>
               <swipeout-item v-for="pl in propertyList" :key="pl.id">
@@ -35,6 +36,7 @@
               </swipeout-item>
           </swipeout>
         </div>
+        <!--step1 显示可以选择的列表 -->
         <div v-show="isShowCheckerList">
           <checker default-item-class="check-default" selected-item-class="check-selected" v-model="checked_value" type="checkbox">
             <div v-for="pl in propertyList" :key="pl.id">
@@ -62,6 +64,7 @@
             </div>
           </checker>
         </div>
+        <!--step2 归还或修复按钮组 -->
         <div class="bottom-button" v-show="isShowDefaultList">
             <flexbox :gutter="0">
               <flexbox-item>
@@ -72,6 +75,7 @@
               </flexbox-item>
             </flexbox>
         </div>
+        <!--step2 选择的时候完成或取消按钮组 -->
         <div class="bottom-button" v-show="isShowCheckerList">
             <flexbox :gutter="0">
               <flexbox-item>
@@ -82,9 +86,10 @@
               </flexbox-item>
             </flexbox>
         </div>
+        <!--step3 报修或归还原因的文本框 -->
         <div v-show="isShowTextArea">
           <div class="textarea-warp">
-            <x-textarea :max="100" :placeholder="placeholderText"></x-textarea>
+            <x-textarea :max="100" v-model="reason" :placeholder="placeholderText"></x-textarea>
           </div>
           <div class="btn-group">
             <x-button type="warn" @click.native="submitData()">提交</x-button>
@@ -93,6 +98,7 @@
         <toast v-model="isSelectEmpty" type="text" width="15em" position="bottom">请选择，资产不能为空。</toast>
         <toast v-model="showSubmitSuccessToast" type="success" :time="1000" text="提交成功"></toast> 
         <toast v-model="showSubmitErrorToast" type="cancel" :time="1000" text="提交失败"></toast>
+        <div class="friendship-tips">亲！您的物品都已经归还或都已经报修了。</div>
       </div>
       <div style="padding-bottom: 50px;" v-show="showApplying">
         <div v-for="al in applyList" :key="al.id">
@@ -119,7 +125,7 @@
     </div>
 </template>
 <style scoped>
-  @import url('./property-list.css');
+  @import url('./property.css');
 
     .vux-checker-item {
       position: relative;
@@ -165,8 +171,8 @@
         return {
           showMyProperty: true,
           showApplying: false,
-          selected: 0,
           isSelectStart: '',
+          reason: '',
           propertyList: [],
           applyList: [],
           isShowDefaultList: true,
@@ -183,7 +189,6 @@
       methods: {
         //我的申请和我的资源切换
         TabChange(index) {
-          this.$store.commit('setProOrApp',index);
           if(index == 0) {
             this.showMyProperty = true;
             this.showApplying = false;
@@ -243,7 +248,8 @@
           this.$ajax.get(config.baseUrl + api.requestApply, {
             params: {
               typeId: this.submitType,
-              propIds: this.checked_value.join(',')
+              propIds: this.checked_value.join(','),
+              reason: this.reason
             }
           }).then((response) => {
             if(response.data.code == '0') {

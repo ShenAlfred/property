@@ -37,7 +37,7 @@
   </div>
 </template>
 <style>
-  @import url('./detail.css');
+  @import url('./property.css');
 </style>
 <script>
 

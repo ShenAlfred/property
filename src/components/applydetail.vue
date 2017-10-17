@@ -1,35 +1,34 @@
 <template>
     <div>
         <div class="detail-warp">
-            <div class="property-content">
-                <div>
-                    <strong>申请类型:</strong>
-                    <span>{{applyDetail.applyType}}</span>
-                </div>
-                <div>
-                    <strong>申请事由:</strong>
-                    <span>{{ applyDetail.reason }}</span>
-                </div>
-                <div>
-                    <strong>申请时间:</strong>
-                    <span>{{applyDetail.createTime}}</span>
-                </div>
-                <div>
-                    <strong>申请处理时间:</strong>
-                    <span>{{applyDetail.handleTime}}</span>
-                </div>
-                <div>
-                    <strong>申请的处理意见:</strong>
-                    <span>{{applyDetail.handleResult}}</span>
-                </div>
+            <div>
+                <strong>申请类型:</strong>
+                <span>{{applyDetail.applyType}}</span>
+            </div>
+            <div>
+                <strong>申请事由:</strong>
+                <span>{{ applyDetail.reason }}</span>
+            </div>
+            <div>
+                <strong>申请时间:</strong>
+                <span>{{applyDetail.createTime}}</span>
+            </div>
+            <div>
+                <strong>处理时间:</strong>
+                <span>{{applyDetail.handleTime}}</span>
+            </div>
+            <div>
+                <strong>处理意见:</strong>
+                <span>{{applyDetail.handleResult}}</span>
             </div>
             <div style="margin-top: 20px;">
+                <div class="ap-s-t">固定资产列表</div>
                 <div class="pro-item" v-for="(ad2, index) in applyDetail2">
                     <div v-bind:class="{ odd: index%2==0 }">
                         <flexbox>
                             <flexbox-item>
                                 <strong>类型:</strong>
-                                <span>{{ ad2.state_text }}</span>
+                                <span>{{ ad2.typeName }}</span>
                             </flexbox-item>
                             <flexbox-item>
                                 <strong>编号:</strong>
@@ -47,7 +46,7 @@
     </div>
 </template>
 <style>
-    @import url('./detail.css');
+    @import url('./property.css');
 </style>
 <script>
 

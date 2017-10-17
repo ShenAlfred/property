@@ -1,0 +1,72 @@
+.property-tab {
+    padding: 15px;
+}
+.property-content {
+    margin-bottom: 10px;
+    background: #fff;
+    padding: 10px 15px;
+    font-size: 14px;
+}
+.property-attr-item {
+    padding: 2px 0;
+    font-size: 14px;
+}
+.textarea-warp {
+    padding: 10px;
+}
+.btn-group {
+    padding: 10px 20px;
+}
+.bottom-button {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #fff;
+  text-align:center;
+  letter-spacing: 2px;
+  line-height: 50px;
+  font-size: 14px;
+  z-index: 9;
+}
+.detail-warp {
+    background: #fff;
+    margin: 10px 0;
+    padding: 10px 15px;
+    color: #333;
+    font-size: 14px;
+}
+.detail-item {
+    margin: 5px 0;
+}
+.detail-item span {
+  padding-left: 5px;
+}
+.pro-item {
+    margin: 5px 0;
+}
+.pro-item .odd {    
+    background: #f5f5f5;
+}
+.friendship-tips {
+    color: #ccc;
+    font-size: 14px;
+    padding: 10px 0;
+    text-align: center;
+}
+.ap-s-t {
+    position: relative;
+    font-weight: 600;
+    font-size: 14px;
+    padding-left: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+.ap-s-t:before{
+    content: '';
+    position: absolute;
+    width: 5px;
+    height: 20px;
+    left: 0;
+    bottom: 0;
+    background: #ddd;
+}
