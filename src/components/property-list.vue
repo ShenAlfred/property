@@ -14,7 +14,7 @@
         <!--step1 默认显示列表 -->
         <div v-show="isShowDefaultList">
           <swipeout>
-              <swipeout-item v-for="pl in propertyList" :key="pl.id">
+              <swipeout-item v-for="pl in filterApplyed()" :key="pl.id">
                   <div slot="content" class="property-content">
                       <div v-on:click="goToDetail(pl.id)">
                           <flexbox class="property-attr-item">
@@ -39,7 +39,7 @@
         <!--step1 显示可以选择的列表 -->
         <div v-show="isShowCheckerList">
           <checker default-item-class="check-default" selected-item-class="check-selected" v-model="checked_value" type="checkbox">
-            <div v-for="pl in propertyList" :key="pl.id">
+            <div v-for="pl in filterApplyed()" :key="pl.id">
               <checker-item  :value="pl.id">
                 <div class="property-content">
                   <flexbox class="property-attr-item">
@@ -65,7 +65,7 @@
           </checker>
         </div>
         <!--step2 归还或修复按钮组 -->
-        <div class="bottom-button" v-show="!noDataTip">
+        <div class="bottom-button" v-show="!isShowBtnGroup">
             <flexbox :gutter="0">
               <flexbox-item>
                 <x-button type="primary" @click.native="selectStart(1)">归还</x-button>
@@ -180,6 +180,7 @@
           propertyList: [],
           applyList: [],
           noDataTip: false,
+          isShowBtnGroup: false,
           isShowDefaultList: true,
           isShowCheckerList: false,
           isShowTextArea: false,
@@ -192,6 +193,12 @@
         }
       },
       methods: {
+        filterApplyed: function() {
+          const propertyList = this.propertyList;
+          return propertyList.filter(function (item){
+            return item.requestState == 0;
+          });
+        },
         //我的申请和我的资源切换
         TabChange(index) {
           if(index == 0) {
@@ -240,6 +247,7 @@
           }else {
             this.isShowTextArea = true;
             this.isShowCheckerList = false;
+            this.isShowBtnGroup = true;
           }
         },
         //取消选择资源
@@ -302,8 +310,16 @@
         this.getPropertyList().then((resolve) => {
           if(resolve.data.data.length) {
             this.propertyList = resolve.data.data;
+            if(!this.filterApplyed().length) {
+              this.noDataTip = true;
+              this.isShowBtnGroup = true;
+            }else {
+              this.noDataTip = false;
+              this.isShowBtnGroup = false;
+            }
           }else {
-            this.noDataTip = true;
+            //this.noDataTip = true;
+            //this.isShowBtnGroup = true;
           }
         });
       },
