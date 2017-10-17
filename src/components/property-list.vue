@@ -65,7 +65,7 @@
           </checker>
         </div>
         <!--step2 归还或修复按钮组 -->
-        <div class="bottom-button" v-show="isShowDefaultList">
+        <div class="bottom-button" v-show="!noDataTip">
             <flexbox :gutter="0">
               <flexbox-item>
                 <x-button type="primary" @click.native="selectStart(1)">归还</x-button>
@@ -98,7 +98,7 @@
         <toast v-model="isSelectEmpty" type="text" width="15em" position="bottom">请选择，资产不能为空。</toast>
         <toast v-model="showSubmitSuccessToast" type="success" :time="1000" text="提交成功"></toast> 
         <toast v-model="showSubmitErrorToast" type="cancel" :time="1000" text="提交失败"></toast>
-        <div class="friendship-tips">亲！您的物品都已经归还或都已经报修了。</div>
+        <div class="friendship-tips" v-show="noDataTip">亲！您的物品都已经归还或都已经报修了。</div>
       </div>
       <div style="padding-bottom: 50px;" v-show="showApplying">
         <div v-for="al in applyList" :key="al.id">
@@ -112,11 +112,15 @@
               <span>{{al.createTime}}</span>
             </div>
             <div>
-              <strong>申请处理时间:</strong>
+              <strong>处理时间:</strong>
               <span>{{al.handleTime}}</span>
             </div>
             <div>
-              <strong>申请的处理意见:</strong>
+              <strong>申请状态:</strong>
+              <span>{{ al.state == 1 ? '申请中': (al.state == 2 ? '拒绝' : (al.state == 3 ? '通过' : '')) }}</span>
+            </div>
+            <div>
+              <strong>处理意见:</strong>
               <span>{{al.handleResult}}</span>
             </div>
           </div>
@@ -175,6 +179,7 @@
           reason: '',
           propertyList: [],
           applyList: [],
+          noDataTip: false,
           isShowDefaultList: true,
           isShowCheckerList: false,
           isShowTextArea: false,
@@ -297,6 +302,8 @@
         this.getPropertyList().then((resolve) => {
           if(resolve.data.data.length) {
             this.propertyList = resolve.data.data;
+          }else {
+            this.noDataTip = true;
           }
         });
       },

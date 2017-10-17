@@ -26,7 +26,7 @@
           <span> {{ propertyDetail.corpName }} </span>
         </div>
         <div class="detail-item">
-          <strong>价值:(单位: 元)</strong>
+          <strong>价值(元):</strong>
           <span> {{ propertyDetail.price }} </span>
         </div>
         <div class="detail-item">
