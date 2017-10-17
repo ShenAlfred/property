@@ -21,6 +21,10 @@
                 <strong>处理意见:</strong>
                 <span>{{applyDetail.handleResult}}</span>
             </div>
+            <div>
+                <strong>申请状态:</strong>
+                <span>{{applyDetail.applyState}}</span>
+            </div>
             <div style="margin-top: 20px;">
                 <div class="ap-s-t">固定资产列表</div>
                 <div class="pro-item" v-for="(ad2, index) in applyDetail2">
@@ -43,6 +47,9 @@
                 </div>
             </div>
         </div>
+        <div style="margin: 0 10px;">
+            <x-button @click.native="goHome()" type="default">返回首页</x-button>
+        </div>
     </div>
 </template>
 <style>
@@ -50,7 +57,7 @@
 </style>
 <script>
 
-    import { Flexbox, FlexboxItem } from 'vux';
+    import { Flexbox, FlexboxItem, XButton } from 'vux';
     import when from 'when';
     import api from '../api';
     import config from '../config';
@@ -60,12 +67,16 @@
         data() {
             return {
                 applyDetail: {
-                    applyType: ''
+                    applyType: '',
+                    applyState: ''
                 },
                 applyDetail2: []
             }
         },
         methods: {
+            goHome() {
+                window.location.href = "/property/app"
+            },
             getApplyDetail1(_params) {
                 const deferred = when.defer();
                 const promise = deferred.promise;
@@ -97,12 +108,21 @@
             }
             this.getApplyDetail1(_params).then((res) => {
                 const type = res.data.data.typeId;
+                const state = res.data.data.state;
+                this.applyDetail = res.data.data;
                 if(type == 1) {
                     this.applyDetail.applyType = "归还申请";
                 }else if(type == 2) {
                     this.applyDetail.applyType = "维修申请";
                 }
-                this.applyDetail = res.data.data;
+
+                if(state == 1){
+                    this.applyDetail.applyState = "申请中";
+                }else if(state == 2){
+                    this.applyDetail.applyState = "拒绝";
+                }else if(state == 3){
+                    this.applyDetail.applyState = "通过";
+                }
             });
             this.getApplyDetail2(_params).then((res) => {
                 var result = res.data.data;
@@ -130,7 +150,8 @@
         },
         components: {
             Flexbox, 
-            FlexboxItem
+            FlexboxItem,
+            XButton
         }
     }
 

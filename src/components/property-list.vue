@@ -255,7 +255,8 @@
             if(response.data.code == '0') {
               this.showSubmitSuccessToast = true;
               setTimeout(() => {
-                this.$router.go({path: '/'});
+                //this.$router.go({path: '/'});
+                window.location.href = "/property/app"
               }, 1500);
             }else {
               this.showSubmitErrorToast = true;

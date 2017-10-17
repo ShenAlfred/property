@@ -7,7 +7,7 @@
         </div>
         <div class="detail-item">
           <strong>类型:</strong>
-          <span> {{ propertyDetail.typeId }} </span>
+          <span> {{ propertyDetail.typeName }} </span>
         </div>
         <div class="detail-item">
           <strong>质保截止日期:</strong>
