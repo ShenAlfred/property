@@ -11,7 +11,7 @@ const routes = [
       path: '/',
       name: 'propertyList',
       component: resolve => require(['@/components/property-list'], resolve),
-      beforeEnter: (to, ffrom, next) => {
+      beforeEnter: (to, from, next) => {
         if(typeof(reqId) == "undefined") {
           next();
         }else {
@@ -23,7 +23,7 @@ const routes = [
         }
         if(config.isDevEnv) {
           const query = {
-            ticket: util.getUrlKey("ticket") || '7f55e10811a4403b76d1cf1a6f7c7016'
+            ticket: util.getUrlKey("ticket") || '5fb8c5452901fb64aeaa07bf93b76d0f'
           };
           axios.get(config.baseUrl + "/property/app/link", {
             params: {

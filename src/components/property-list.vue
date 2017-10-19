@@ -100,9 +100,14 @@
         <toast v-model="showSubmitErrorToast" type="cancel" :time="1000" text="提交失败"></toast>
         <div class="friendship-tips" v-show="noDataTip">亲！您的物品都已经归还或都已经报修了。</div>
       </div>
+      <!-- 我的申请 -->
       <div style="padding-bottom: 50px;" v-show="showApplying">
         <div v-for="al in applyList" :key="al.id">
           <div class="property-content" v-on:click="goToApplyDetail(al.id)">
+            <div>
+              <strong>申请类型:</strong>
+              <span>{{al.typeId == 1 ? '归还申请' : '维修申请'}}</span>
+            </div>
             <div>
               <strong>申请事由:</strong>
               <span>{{al.reason}}</span>
