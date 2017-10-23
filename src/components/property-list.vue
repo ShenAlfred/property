@@ -315,7 +315,6 @@
         this.getPropertyList().then((resolve) => {
           if(resolve.data.data.length) {
             this.propertyList = resolve.data.data;
-            console.log(this.filterApplyed())
             if(!this.filterApplyed().length) {
               this.noDataTip = true;
               this.isShowBtnGroup = true;
