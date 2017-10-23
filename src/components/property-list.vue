@@ -87,7 +87,7 @@
             </flexbox>
         </div>
         <!--step3 报修或归还原因的文本框 -->
-        <div v-show="isShowTextArea">
+        <div v-show="isShowTextArea"> 
           <div class="textarea-warp">
             <x-textarea :max="100" v-model="reason" :placeholder="placeholderText"></x-textarea>
           </div>
@@ -315,6 +315,7 @@
         this.getPropertyList().then((resolve) => {
           if(resolve.data.data.length) {
             this.propertyList = resolve.data.data;
+            console.log(this.filterApplyed())
             if(!this.filterApplyed().length) {
               this.noDataTip = true;
               this.isShowBtnGroup = true;
@@ -323,8 +324,8 @@
               this.isShowBtnGroup = false;
             }
           }else {
-            //this.noDataTip = true;
-            //this.isShowBtnGroup = true;
+            this.noDataTip = true;
+            this.isShowBtnGroup = true;
           }
         });
       },

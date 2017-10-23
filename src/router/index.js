@@ -23,7 +23,7 @@ const routes = [
         }
         if(config.isDevEnv) {
           const query = {
-            ticket: util.getUrlKey("ticket") || '5fb8c5452901fb64aeaa07bf93b76d0f'
+            ticket: util.getUrlKey("ticket") || '10d7ca54a4e9a867ca7b7f748ce15044'
           };
           axios.get(config.baseUrl + "/property/app/link", {
             params: {
