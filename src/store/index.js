@@ -19,9 +19,7 @@ const store = new Vuex.Store({
       state.isSelectStart = value;
     }
   },
-  actions: {
-
-  }
+  actions: {}
 })
 
 export default store
